@@ -87,6 +87,7 @@ u_int lookup_rompar(const u_int rominfo) {
         case 0x019D20FF: // Pm25LD512C
         case 0x019D207F: // Pm25LD512C2
         case 0x001F6500: // AT25F512B
+        case 0x001F6501: // AT25DF512C
         case 0x001C3110: // EN25F05
         case 0x001C3111: // EN25F10
         case 0x001C3112: // EN25F20
@@ -542,7 +543,7 @@ int write_firmware(int fd, char *filename, unsigned int len) {
 
 void usage() {
 
-    printf("upd72020x-load: version 0.1\n");
+    printf("upd72020x-load: version 0.2\n");
     printf("usage: upd72020 -r -b bus -d dev -f fct -s -o outfile : read eeprom to file (size default is 0x10000 or 64KB)\n");
     //printf("usage: upd7202 -c -b -d -f -s -i outfile : check eeprom against file\n");
     printf("usage: upd72020 -w -b bus -d dev -f fct -i infile : write file to eeprom\n");
@@ -623,7 +624,7 @@ int main(int argc, char **argv) {
     printf("fct = %x \n", fct);
     printf("fname = %s \n", filename);
 
-    sprintf(pcicfgfile, "/sys/bus/pci/devices/0000:%02x:%02x.%01x/config",
+    sprintf(pcicfgfile, "/sys/bus/pci/devices/%04x:%02x:%02x.0/config",
             bus, dev, fct);
 
     fd = open(pcicfgfile, O_RDWR);
